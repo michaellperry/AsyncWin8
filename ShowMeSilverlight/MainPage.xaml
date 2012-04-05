@@ -22,7 +22,10 @@
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="4" Background="Maroon">
-                            <TextBlock Text="{Binding ShowTime, StringFormat='MMM d ddd'}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" TextAlignment="Center" TextWrapping="Wrap"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding ShowTime, StringFormat='MMM d'}" FontSize="16" HorizontalAlignment="Center" Foreground="White"/>
+                                <TextBlock Text="{Binding ShowTime, StringFormat='ddd'}" FontSize="16" HorizontalAlignment="Center" Foreground="White"/>
+                            </StackPanel>
                         </Border>
                         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}" FontSize="16" Foreground="DarkBlue" VerticalAlignment="Bottom"/>
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Venue}" Foreground="DarkGray"/>
