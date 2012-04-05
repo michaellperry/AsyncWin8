@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Windows.Storage;
 
 namespace ShowMeMetro.Models
 {
@@ -8,14 +11,19 @@ namespace ShowMeMetro.Models
         private const string FileName = "shows.xml";
         private static readonly XmlSerializer ShowsSerializer = new XmlSerializer(typeof(ShowsDocument));
 
-        //private IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
-
         public bool FileExists
         {
             get
             {
-                return false;
-                //return storage.FileExists(FileName);
+                try
+                {
+                    StorageFile file = ApplicationData.Current.LocalFolder.GetFileAsync(FileName).GetResults();
+                    return true;
+                }
+                catch (IOException fnf)
+                {
+                    return false;
+                }
             }
         }
 
@@ -33,13 +41,14 @@ namespace ShowMeMetro.Models
 
         public void WriteDocument(ShowsDocument document)
         {
-            //lock (this)
-            //{
-            //    using (IsolatedStorageFileStream stream = storage.CreateFile(FileName))
-            //    {
-            //        ShowsSerializer.Serialize(stream, document);
-            //    }
-            //}
+            lock (this)
+            {
+                StorageFile file = ApplicationData.Current.LocalFolder.CreateFileAsync(FileName).GetResults();
+                using (Stream stream = file.OpenStreamForWriteAsync().Result)
+                {
+                    ShowsSerializer.Serialize(stream, document);
+                }
+            }
         }
     }
 }
