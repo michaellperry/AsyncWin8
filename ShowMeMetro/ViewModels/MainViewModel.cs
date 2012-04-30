@@ -1,42 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ShowMeMetro.Models;
+using Windows.Foundation.Collections;
 
 namespace ShowMeMetro.ViewModels
 {
     public class MainViewModel
     {
         private ShowsFile _showsFile = new ShowsFile();
-        private List<Show> _shows;
+        private IObservableVector<object> _shows = new ObservableVector<object>();
 
-        public IEnumerable<Show> Shows
+        public IObservableVector<object> Shows
         {
             get
             {
-                if (_shows == null)
-                    LoadShows();
-
                 return _shows;
             }
         }
 
-        private void LoadShows()
+        public async Task LoadShows()
         {
-            ShowsDocument document;
-            if (_showsFile.FileExists)
+            ShowsDocument document = null;
+            try
             {
-                document = _showsFile.ReadDocument();
+                if (await _showsFile.FileExists())
+                {
+                    document = await _showsFile.ReadDocument();
+                }
             }
-            else
+            catch (Exception x)
             {
-                document = GetSampleData();
-                _showsFile.WriteDocument(document);
+                // The file was bad. Let's try to create a good one.
             }
-            _shows = document.Shows;
+
+            if (document == null)
+            {
+                document = await GetSampleData();
+                await _showsFile.WriteDocument(document);
+            }
+            _shows.Clear();
+            foreach (var show in document.Shows)
+            {
+                _shows.Add(show);
+            }
         }
 
-        private static ShowsDocument GetSampleData()
+        private static async Task<ShowsDocument> GetSampleData()
         {
+            await Task.Delay(500);
             return new ShowsDocument
             {
                 Shows = new List<Show>

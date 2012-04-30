@@ -125,6 +125,7 @@
     <Compile Include="Models\Show.cs" />
     <Compile Include="Models\ShowsDocument.cs" />
     <Compile Include="Models\ShowsFile.cs" />
+    <Compile Include="ObservableVector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />

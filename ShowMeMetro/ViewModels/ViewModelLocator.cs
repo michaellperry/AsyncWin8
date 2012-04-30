@@ -1,4 +1,5 @@
-﻿
+﻿using System.Threading.Tasks;
+
 namespace ShowMeMetro.ViewModels
 {
     public class ViewModelLocator
@@ -11,6 +12,11 @@ namespace ShowMeMetro.ViewModels
             {
                 return _main;
             }
+        }
+
+        public async Task Load()
+        {
+            await _main.LoadShows();
         }
     }
 }

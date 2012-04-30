@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ShowMeMetro.ViewModels;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -53,6 +54,10 @@ namespace ShowMeMetro
             // Place the frame in the current Window and ensure that it is active
             Window.Current.Content = rootFrame;
             Window.Current.Activate();
+
+            ViewModelLocator locator = Resources["Locator"] as ViewModelLocator;
+            if (locator != null)
+                locator.Load();
         }
 
         /// <summary>

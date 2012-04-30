@@ -11,44 +11,40 @@ namespace ShowMeMetro.Models
         private const string FileName = "shows.xml";
         private static readonly XmlSerializer ShowsSerializer = new XmlSerializer(typeof(ShowsDocument));
 
-        public bool FileExists
+        public async Task<bool> FileExists()
         {
-            get
+            try
             {
-                try
-                {
-                    StorageFile file = ApplicationData.Current.LocalFolder.GetFileAsync(FileName).GetResults();
-                    return true;
-                }
-                catch (IOException fnf)
-                {
-                    return false;
-                }
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(FileName);
+                return true;
+            }
+            catch (IOException fnf)
+            {
+                return false;
             }
         }
 
-        public ShowsDocument ReadDocument()
+        public async Task<ShowsDocument> ReadDocument()
         {
             //lock (this)
             //{
-            //    using (IsolatedStorageFileStream stream = storage.OpenFile(FileName, FileMode.Open, FileAccess.Read))
-            //    {
-            //        return (ShowsDocument)ShowsSerializer.Deserialize(stream);
-            //    }
+            using (Stream stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(FileName))
+            {
+                return (ShowsDocument)ShowsSerializer.Deserialize(stream);
+            }
             //}
-            return null;
         }
 
-        public void WriteDocument(ShowsDocument document)
+        public async Task WriteDocument(ShowsDocument document)
         {
-            lock (this)
+            //lock (this)
+            //{
+            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.ReplaceExisting);
+            using (Stream stream = await file.OpenStreamForWriteAsync())
             {
-                StorageFile file = ApplicationData.Current.LocalFolder.CreateFileAsync(FileName).GetResults();
-                using (Stream stream = file.OpenStreamForWriteAsync().Result)
-                {
-                    ShowsSerializer.Serialize(stream, document);
-                }
+                ShowsSerializer.Serialize(stream, document);
             }
+            //}
         }
     }
 }
