@@ -2,7 +2,9 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Windows.Foundation;
 using Windows.Storage;
+using Windows.Storage.Streams;
 
 namespace ShowMeMetro.Models
 {
@@ -28,9 +30,22 @@ namespace ShowMeMetro.Models
         {
             //lock (this)
             //{
-            using (Stream stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(FileName))
+            StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(FileName);
+            IAsyncOperation<IRandomAccessStream> operation = file.OpenAsync(FileAccessMode.Read);
+            try
             {
-                return (ShowsDocument)ShowsSerializer.Deserialize(stream);
+                IRandomAccessStream randomAccessStream = await operation;
+                return await Task.Run(() =>
+                {
+                    using (Stream stream = randomAccessStream.AsStreamForRead())
+                    {
+                        return (ShowsDocument)ShowsSerializer.Deserialize(stream);
+                    }
+                });
+            }
+            finally
+            {
+                operation.Close();
             }
             //}
         }
