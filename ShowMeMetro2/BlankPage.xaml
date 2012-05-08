@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="ShowMeMetro2.BlankPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ShowMeMetro2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    DataContext="{Binding Main, Source={StaticResource Locator}}"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundBrush}">
+        <ListBox ItemsSource="{Binding Shows}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="370"/>
+                            <ColumnDefinition Width="70"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="4" Background="Maroon">
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding ShowTime, Converter={StaticResource StringFormat}, ConverterParameter='MMM d'}" FontSize="16" HorizontalAlignment="Center" Foreground="White"/>
+                                <TextBlock Text="{Binding ShowTime, Converter={StaticResource StringFormat}, ConverterParameter='ddd'}" FontSize="16" HorizontalAlignment="Center" Foreground="White"/>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}" FontSize="16" Foreground="DarkBlue" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Venue}" Foreground="DarkGray"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="On sale" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="DarkGray"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SaleTime, Converter={StaticResource StringFormat}, ConverterParameter='MMM d'}" HorizontalAlignment="Right" Foreground="DarkGray"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Page>

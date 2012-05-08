@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Net;
+using System.Windows;
 
-namespace ShowMeSilverlight.Models
+namespace ShowMeMetro2.Models
 {
     public class Show
     {

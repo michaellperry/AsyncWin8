@@ -1,44 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using ShowMeSilverlight.Models;
+using System.Threading.Tasks;
+using ShowMeMetro;
+using ShowMeMetro2.Models;
+using Windows.Foundation.Collections;
 
-namespace ShowMeSilverlight.ViewModels
+namespace ShowMeMetro2.ViewModels
 {
     public class MainViewModel
     {
         private ShowsFile _showsFile = new ShowsFile();
-        private List<Show> _shows;
+        private IObservableVector<object> _shows = new ObservableVector<object>();
 
-        public IEnumerable<Show> Shows
+        public IObservableVector<object> Shows
         {
             get
             {
-                if (_shows == null)
-                    LoadShows();
-
                 return _shows;
             }
         }
 
-        private void LoadShows()
+        public async void LoadShows()
         {
             ShowsDocument document;
-            if (_showsFile.FileExists)
+            if (await _showsFile.GetFileExistsAsync())
             {
-                document = _showsFile.ReadDocument();
+                document = await _showsFile.ReadDocumentAsync();
             }
             else
             {
-                document = GetSampleData();
-                _showsFile.WriteDocument(document);
+                document = await GetSampleDataAsync();
+                await _showsFile.WriteDocumentAsync(document);
             }
-            _shows = document.Shows;
+            foreach (var show in document.Shows)
+                _shows.Add(show);
         }
 
-        private static ShowsDocument GetSampleData()
+        private static async Task<ShowsDocument> GetSampleDataAsync()
         {
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
             return new ShowsDocument
             {
                 Shows = new List<Show>
