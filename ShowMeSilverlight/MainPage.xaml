@@ -23,14 +23,14 @@
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="4" Background="Maroon">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="{Binding ShowTime, StringFormat='MMM d'}" FontSize="16" HorizontalAlignment="Center" Foreground="White"/>
-                                <TextBlock Text="{Binding ShowTime, StringFormat='ddd'}" FontSize="16" HorizontalAlignment="Center" Foreground="White"/>
+                                <TextBlock Text="{Binding ShowTime, Converter={StaticResource StringFormat}, ConverterParameter='MMM d'}" FontSize="16" HorizontalAlignment="Center" Foreground="White"/>
+                                <TextBlock Text="{Binding ShowTime, Converter={StaticResource StringFormat}, ConverterParameter='ddd'}" FontSize="16" HorizontalAlignment="Center" Foreground="White"/>
                             </StackPanel>
                         </Border>
                         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}" FontSize="16" Foreground="DarkBlue" VerticalAlignment="Bottom"/>
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Venue}" Foreground="DarkGray"/>
                         <TextBlock Grid.Row="0" Grid.Column="2" Text="On sale" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="DarkGray"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SaleTime, StringFormat='MMM d'}" HorizontalAlignment="Right" Foreground="DarkGray"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SaleTime, Converter={StaticResource StringFormat}, ConverterParameter='MMM d'}" HorizontalAlignment="Right" Foreground="DarkGray"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
