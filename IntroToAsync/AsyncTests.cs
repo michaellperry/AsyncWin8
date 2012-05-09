@@ -39,10 +39,10 @@ namespace IntroToAsync
         }
 
         [TestMethod]
-        public void CallMethodAsynchronouslyNewStyle()
+        public async Task CallMethodAsynchronouslyNewStyle()
         {
             Task<int> task = _slowPoke.WorkAsync();
-            int answer = task.Result;
+            int answer = await task;
             Assert.AreEqual(42, answer);
         }
     }
